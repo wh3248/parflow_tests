@@ -49,7 +49,7 @@ class BrowsePfb:
        d1 = len(data[0])
        d2 = len(data[0][0])
        print(f"Dimension sizes: ({d1}, {d2})")
-
+       print(data[0][0][0])
 
     def read_args(self):
         if len(sys.argv) < 2:
