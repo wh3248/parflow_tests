@@ -20,10 +20,36 @@ class BrowsePfb:
                 sys.exit(-1)
             pfdata = PFData(self.pfb_file_name)
             pfdata.loadHeader()
-            print(pfdata)
+            pfdata.loadPQR()
+            self.printPFData(pfdata)
         except Exception as e:
             logging.error(str(e))
             sys.exit(-1)
+
+    def printPFData(self, pfdata):
+       num_sub_grids = pfdata.getNumSubgrids()
+       x = pfdata.getX()
+       y = pfdata.getY()
+       z = pfdata.getZ()
+       dx = pfdata.getDX()
+       dy = pfdata.getDY()
+       dz = pfdata.getDZ()
+       nx = pfdata.getNX()
+       ny = pfdata.getNY()
+       nz = pfdata.getNZ()
+       p = pfdata.getP()
+       q = pfdata.getQ()
+       r = pfdata.getR()
+       order = pfdata.getIndexOrder()
+
+       print(f"#SubGrids:{num_sub_grids} PQR=({p}, {q}, {r}) XYZ=({x}, {y}, {z}) NXYZ=({nx}, {ny}, {nz}) DXYZ=({dx}, {dy}, {dz})")
+
+       pfdata.loadData()
+       data = pfdata.moveDataArray()
+       d1 = len(data[0])
+       d2 = len(data[0][0])
+       print(f"Dimension sizes: ({d1}, {d2})")
+
 
     def read_args(self):
         if len(sys.argv) < 2:
