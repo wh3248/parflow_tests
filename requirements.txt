@@ -1,2 +1,16 @@
 parflowio
+numpy <= 1.20   # This older version is required for numba
+dask
+numba
+netCDF4
+h5netcdf
+scipy
+pydap
+zar
+fsspec
+cftime
+#rasterio
+pooch
+xarray
+xarray[io]
 
