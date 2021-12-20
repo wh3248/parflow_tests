@@ -6,11 +6,14 @@
 import sys
 import os
 import logging
+import time
+import numpy as np
 from parflowio.pyParflowio import PFData
 
 class BrowsePfb:
     def __init__(self):
         self.pfb_file_name = None
+        self.subgrid_number = 0
 
     def run(self):
         try:
@@ -18,13 +21,25 @@ class BrowsePfb:
             if not os.path.exists(self.pfb_file_name):
                 print(f"File '{self.pfb_file_name}' does not exist.")
                 sys.exit(-1)
-            pfdata = PFData(self.pfb_file_name)
-            pfdata.loadHeader()
-            pfdata.loadPQR()
-            self.printPFData(pfdata)
+
+            # Read the pfb file using PFData and time the load
+            start = time.time()
+            data = self.read_data()
+            duration = time.time() - start
+
+            print("{:.4f} seconds to load using PFData".format(duration))
+            print()
+            self.printPFData(data)
         except Exception as e:
             logging.error(str(e))
             sys.exit(-1)
+
+    def read_data(self):
+            pfdata = PFData(self.pfb_file_name)
+            pfdata.loadHeader()
+            pfdata.loadPQR()
+
+            return pfdata
 
     def printPFData(self, pfdata):
        num_sub_grids = pfdata.getNumSubgrids()
@@ -56,6 +71,9 @@ class BrowsePfb:
             print("Error: PFB file name is required.")
             sys.exit(-1)            
         self.pfb_file_name = sys.argv[1]
+        if len(sys.argv) > 2:
+            self.num_sub_grids = int(sys.argv[2])
+
 
 main = BrowsePfb()
 main.run()
