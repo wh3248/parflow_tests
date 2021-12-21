@@ -24,19 +24,20 @@ class BrowsePfb:
 
             # Read the pfb file using PFData and time the load
             start = time.time()
-            data = self.read_data()
+            pfdata = self.read_pfdata()
             duration = time.time() - start
 
             print("{:.4f} seconds to load using PFData".format(duration))
             print()
-            self.printPFData(data)
+            self.printPFData(pfdata)
         except Exception as e:
             logging.error(str(e))
             sys.exit(-1)
 
-    def read_data(self):
+    def read_pfdata(self):
             pfdata = PFData(self.pfb_file_name)
             pfdata.loadHeader()
+            pfdata.loadData()
             pfdata.loadPQR()
 
             return pfdata
@@ -59,12 +60,12 @@ class BrowsePfb:
 
        print(f"#SubGrids:{num_sub_grids} PQR=({p}, {q}, {r}) XYZ=({x}, {y}, {z}) NXYZ=({nx}, {ny}, {nz}) DXYZ=({dx}, {dy}, {dz})")
 
-       pfdata.loadData()
-       data = pfdata.moveDataArray()
-       d1 = len(data[0])
-       d2 = len(data[0][0])
+       nd_data = pfdata.copyDataArray()
+       d1 = len(nd_data[0])
+       d2 = len(nd_data[0][0])
        print(f"Dimension sizes: ({d1}, {d2})")
-       print(data[0][0][0])
+       print(nd_data.shape)
+       print(nd_data[0][0][0])
 
     def read_args(self):
         if len(sys.argv) < 2:

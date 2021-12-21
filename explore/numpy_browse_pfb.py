@@ -12,7 +12,7 @@ import time
 rootdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(rootdir)
 
-from pf_xarray.pf_backend import ParflowBackendEntrypoint
+#from pf_xarray.pf_backend import ParflowBackendEntrypoint
 from pf_xarray.io import ParflowBinaryReader
 
 class BrowsePfb:
@@ -26,6 +26,10 @@ class BrowsePfb:
             if not os.path.exists(self.pfb_file_name):
                 print(f"File '{self.pfb_file_name}' does not exist.")
                 sys.exit(-1)
+
+            # Load the binary reader class
+            temp = ParflowBinaryReader(self.pfb_file_name)
+
             # Read the pfb file using PFData and time the load
             start = time.time()
             data = self.read_data()

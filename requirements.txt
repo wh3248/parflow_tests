@@ -1,6 +1,6 @@
 parflowio
 numpy <= 1.20   # This older version is required for numba
-dask
+# dask
 numba
 netCDF4
 h5netcdf
@@ -13,4 +13,5 @@ cftime
 pooch
 xarray
 xarray[io]
+#dask-ml[complete]
 
